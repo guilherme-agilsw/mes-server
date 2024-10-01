@@ -2,8 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { DEFAULT_EXPIRESIN } from './auth.module';
-import { JwtPayload, LoginStatus, LoginUserDTO, RegistrationStatus } from 'src/model/auth';
-import { UserCreateDTO, UserDTO } from 'src/model/user';
+import { JwtPayload, LoginStatus, LoginUserDTO, RegistrationStatus, UpdateStatus } from 'src/model/auth';
+import { UserCreateDTO, UserDTO, UserListDTO } from 'src/model/user';
+import { Int32 } from 'typeorm';
 
 
 @Injectable()
@@ -56,5 +57,22 @@ export class AuthService {
         }    
         return user;  
     }
-    
+
+    async getUser(id: number): Promise<UserDTO> {
+        return await this.usersService.findById(id);        
+    }
+
+    async getAllUsers(): Promise<UserListDTO> {
+        return await this.usersService.getAllUsers();        
+    }
+
+    async updateUser(id: number, userDTO: UserDTO): Promise<UpdateStatus> {
+        let status: UpdateStatus = {
+            success: true,
+            message: 'Usuário atualizado',
+        };
+        
+        await this.usersService.updateUser(id, userDTO);
+        return status;  
+    }    
 }

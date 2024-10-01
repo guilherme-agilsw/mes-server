@@ -7,6 +7,11 @@ export interface RegistrationStatus {
     message: string;
 }
 
+export interface UpdateStatus {  
+    success: boolean;  
+    message: string;
+}
+
 export class LoginUserDTO {  
     email:    string;
     password: string;

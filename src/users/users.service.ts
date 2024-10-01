@@ -14,32 +14,15 @@ export class UsersService {
         @InjectRepository(UserEntity) private usersRepository: Repository<UserEntity>) { 
     }
 
-    async getOneUser(id: number): Promise<UserDTO> {   
-        return this.getUser(id);
-    }
-
-    async getUser(id: number): Promise<UserDTO> {
-        const result: UserEntity = await this.usersRepository.createQueryBuilder("users")            
-            .where("users.id = :id", { id: id })
-            .getOne();
-        const user: UserEntity = result;
-        if (!user) {
-            throw new HttpException(`User item doesn't exist`, HttpStatus.BAD_REQUEST);
-        }
-
-        return toPromise(toUserDTO(user));
-    }
-
     async createUser(userDTO: UserCreateDTO): Promise<UserDTO>{    
-        // console.log(userDTO);
 
-        const { name, email, password } = userDTO;
+        const { name, email, password, perfil, ativo } = userDTO;
 
         const userInDB = await this.usersRepository.findOne({ 
             where: { email } 
         });
         if (userInDB) {
-            throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Usuário com este email já existe na base do sistema.', HttpStatus.BAD_REQUEST);
         }
 
         let user: UserEntity = new UserEntity();
@@ -47,9 +30,9 @@ export class UsersService {
         user.uid = uuid.v4();
         user.email = email;
         user.password = password;
+        user.perfil = perfil;
+        user.ativo = ativo;
 
-        // MOCK
-        // this.users.push(user);
         user = await this.usersRepository.save(user);
 
         // console.log(user);
@@ -57,38 +40,28 @@ export class UsersService {
         return toPromise(toUserDTO(user));
     }
 
-    async updateUser(id: number, userDTO: UserCreateDTO): Promise<UserDTO>{    
-        const { name, email, password } = userDTO;
+    async updateUser(id: number, userDTO: UserDTO): Promise<UserDTO>{    
+        
+        const user  = await this.usersRepository.findOne({ where: { id } });
 
-        let user: UserEntity = new UserEntity();
-        user.id = id;
-        user.name = name;
-        // user.uid = uid;
-        user.email = email;
-        user.password = password;
+        if (!user ) {
+            throw new HttpException('Usuário não localizado', HttpStatus.NOT_FOUND);
+        }
 
-        // MOCK
-        // for (let index = 0; index < users.length; index++) {
-        //     const element = users[index];
-        //     if (element.id === id) {
-        //         users[index] = user;
-        //     }
-        // }
-        user = await this.usersRepository.save(user);
+        user.uid = userDTO.uid;
+        user.name = userDTO.name;
+        user.email = userDTO.email;
+        user.perfil = userDTO.perfil;
+        user.ativo = userDTO.ativo;
+        await this.usersRepository.save(user);
 
         return toPromise(toUserDTO(user));
     }
 
     async getAllUsers(): Promise<UserListDTO> {
-        const list: UserListDTO = new UserListDTO();
-        
-        // MOCK
-        // const list: UserListDTO = new UserListDTO();
-        // const result: UserEntity[] = await this.usersRepository.find();
+        const list: UserListDTO = new UserListDTO();        
         const result: UserEntity[] = await this.usersRepository
             .createQueryBuilder("users")
-            .leftJoinAndSelect("users.projects", "pusr")
-            .leftJoinAndSelect("pusr.project", "project")
             .getMany();
 
         for (let index = 0; index < result.length; index++) {
@@ -106,19 +79,18 @@ export class UsersService {
         }
     }
 
-
     async findByLogin({ email, password }: LoginUserDTO): Promise<UserDTO> {    
         const user = await this.usersRepository.findOne({ where: { email } });
         
         if (!user) {
-            throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+            throw new HttpException('Usuário não localizado', HttpStatus.UNAUTHORIZED);
         }
         
         // compare passwords    
         const areEqual = await comparePasswords(user.password, password);
         
         if (!areEqual) {
-            throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+            throw new HttpException('Credenciais Inválidas', HttpStatus.UNAUTHORIZED);
         }
         
         return toUserDTO(user);
@@ -126,12 +98,19 @@ export class UsersService {
 
     async findOne(options?: object): Promise<UserEntity> {
         const user =  await this.usersRepository.findOne(options);
-        // return toUserDto(user);
         return user;
     }
 
     async findByPayload({ uid }: any): Promise<UserDTO> {
         return toUserDTO(await this.findOne({ 
             where:  { uid } })) 
+    }
+
+    async findById({ id }: any): Promise<UserDTO> {
+        const user = await this.findOne({ where: { id } });
+        if (!user) {
+            return null;
+        }
+        return toUserDTO(user);
     }
 }

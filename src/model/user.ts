@@ -8,6 +8,8 @@ export class UserDTO {
     uid: string;
     name: string;
     email: string;
+    perfil: string;
+    ativo: boolean;
     // password: string;
 
 }
@@ -18,6 +20,8 @@ export class UserCreateDTO {
     name: string;
     email: string;
     password: string;
+    perfil: string;
+    ativo: boolean;
 }
 
 export class UserListDTO {
@@ -46,6 +50,12 @@ export class UserEntity {
     
     @Column()
     password: string;
+
+    @Column()
+    perfil: string;
+
+    @Column()
+    ativo: boolean;
 
     @BeforeInsert()  async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);  
