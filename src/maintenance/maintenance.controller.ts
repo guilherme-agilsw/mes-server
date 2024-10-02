@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { MaintenanceService } from './maintenance.service';
-import { MaintenanceDTO } from 'src/model/maintenance';
+import { MaintenanceDTO, MaintenanceListDTO } from 'src/model/maintenance';
 
 @Controller('maintenance')
 export class MaintenanceController {
@@ -30,4 +30,10 @@ export class MaintenanceController {
   remove(@Param('id') id: string) {
     return this.maintenanceService.remove(+id);
   }
+
+  @Get('getAllMaintenance')
+  public async getAllMaintenance(): Promise<MaintenanceListDTO> {
+    return await this.maintenanceService.getAllMaintenance();
+  }
+
 }
