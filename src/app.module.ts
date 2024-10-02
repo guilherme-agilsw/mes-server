@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
       "host": "mysql-1fe3f0b1-testec13-d93e.e.aivencloud.com",
       "port": 11034,
       "username": "avnadmin",
-      "password": "XXX",
+      "password": "AVNS_vRBOjRg9aQvWuv6Xo51",
       "database": "defaultdb",
       "entities": [__dirname + '../modules/**/*.entity{.ts,.js}'],
       "synchronize": true,
