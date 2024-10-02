@@ -12,6 +12,11 @@ export class UsersController {
         return await this.usersService.getAllUsers();  
     }
 
+    @Get('getUser')    
+    public async getUser(@Query('id') id: number): Promise<UserDTO> {
+        return await this.usersService.getUserById(id);
+    }
+
     @Patch('updateUser')
     async updateUser(
       @Query('id') id: number, 
@@ -19,7 +24,5 @@ export class UsersController {
     ): Promise<UserDTO> {
       return this.usersService.updateUser(id, userDTO);
     }
-
-///////////////////
 
 }

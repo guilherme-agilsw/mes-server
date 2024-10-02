@@ -8,6 +8,13 @@ export class MaintenanceDTO {
     situacao: Situacao; 
 }
 
+export class MaintenanceListDTO {
+    maintenances: MaintenanceDTO[];
+    constructor() {
+        this.maintenances = [];
+    }
+}
+
 export enum Situacao {
     ABERTO = 'Aberto',
     EM_ANDAMENTO = 'Em Andamento',

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoginUserDTO } from 'src/model/auth';
 import { toUserDTO } from 'src/model/mapper';
@@ -70,6 +70,16 @@ export class UsersService {
         }
         return toPromise(list);
     }
+
+    async getUserById(id: number): Promise<UserDTO> {
+        const user = await this.usersRepository.findOne({ where: { id } });
+    
+        if (!user) {
+          throw new NotFoundException(`Usuário com ID ${id} não encontrado`);
+        }
+    
+        return toUserDTO(user); // Use seu método para converter para DTO
+      }
 
     async deleteUser(id: number) {
         try{
