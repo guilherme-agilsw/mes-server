@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from 'src/users/users.module';   
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
+import { UsersController } from 'src/users/users.controller';
 
 
 export const DEFAULT_SECRETKEY = 'MESSECRET'
@@ -12,7 +13,7 @@ export const DEFAULT_EXPIRESIN = '6H';
 
 @Module({
     imports: [    
-        UsersModule,
+        forwardRef(() => UsersModule), 
         PassportModule.register({
             defaultStrategy: 'jwt',
             property: 'user',

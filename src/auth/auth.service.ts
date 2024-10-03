@@ -76,7 +76,5 @@ export class AuthService {
         return status;  
     }    
 
-    async getUsersByPerfil(perfil: string): Promise<UserListDTO> {
-        return await this.usersService.getUsersByPerfil(perfil);        
-    }
+    
 }

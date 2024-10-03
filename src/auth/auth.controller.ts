@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserCreateDTO, UserDTO, UserListDTO } from 'src/model/user';
@@ -50,9 +50,4 @@ export class AuthController {
         return await this.authService.updateUser(id, user);
     }
 
-    @Get('getUsersByPerfil')    
-    @UseGuards(AuthGuard())
-    public async getUsersByPerfil(@Body() body: { perfil: string }): Promise<UserListDTO> {
-        return await this.authService.getUsersByPerfil(body.perfil);
-    }
 }

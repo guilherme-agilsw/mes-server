@@ -142,14 +142,14 @@ export class UsersService {
     async countUsersByStatus(): Promise<{ status: string; count: number }[]> {
         const result = await this.usersRepository
             .createQueryBuilder('users')
-            .select('users.ativo AS status') // Supondo que 'ativo' seja a coluna que indica se o usuário é ativo
+            .select('users.ativo AS status')
             .addSelect('COUNT(users.id) AS count')
             .groupBy('users.ativo')
             .getRawMany();
 
         return result.map(row => ({
-            status: row.status ? 'Ativo' : 'Inativo', // Ajuste se sua lógica for diferente
-            count: Number(row.count), // Converte o valor para número
+            status: row.status ? 'Ativo' : 'Inativo', 
+            count: Number(row.count),
         }));
     }
 }

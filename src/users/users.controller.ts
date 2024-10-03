@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Patch, Put, Query, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {UserDTO, UserListDTO } from 'src/model/user';
 import { UsersService } from './users.service';
 
@@ -25,9 +26,10 @@ export class UsersController {
       return this.usersService.updateUser(id, userDTO);
     }
 
-    @Get('getUsersByPerfil')    
-    public async getUsersByPerfil(@Query('perfil') perfil: string): Promise<UserListDTO> {
-        return await this.usersService.getUsersByPerfil(perfil);  
+    @Get('getUsersByPerfil/:perfil')    
+    @UseGuards(AuthGuard())
+    public async getUsersByPerfil(@Param('perfil') perfil: string): Promise<UserListDTO> {
+        return await this.usersService.getUsersByPerfil(perfil);
     }
 
     @Get('countStatus')
