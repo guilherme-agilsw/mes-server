@@ -1,11 +1,15 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MaintenanceController } from './maintenance.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MaintenanceService } from './maintenance.service';
-import { MaintenanceEntity } from 'src/model/maintenance'; // Certifique-se de ajustar o caminho da entidade
+import { MaintenanceEntity } from 'src/model/maintenance'; 
+import { AuthModule } from '../auth/auth.module'; 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MaintenanceEntity])],
+  imports: [
+    TypeOrmModule.forFeature([MaintenanceEntity]),
+    forwardRef(() => AuthModule), 
+  ],
   
   controllers: [MaintenanceController],
   providers: [MaintenanceService],
