@@ -49,4 +49,10 @@ export class AuthController {
     public async updateUser( @Body('id') id: number, @Body() user: UserDTO): Promise<UpdateStatus> {
         return await this.authService.updateUser(id, user);
     }
+
+    @Get('getUsersByPerfil')    
+    @UseGuards(AuthGuard())
+    public async getUsersByPerfil(@Body() body: { perfil: string }): Promise<UserListDTO> {
+        return await this.authService.getUsersByPerfil(body.perfil);
+    }
 }

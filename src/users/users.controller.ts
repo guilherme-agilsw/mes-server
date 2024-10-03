@@ -25,4 +25,9 @@ export class UsersController {
       return this.usersService.updateUser(id, userDTO);
     }
 
+    @Get('getUsersByPerfil')    
+    public async getUsersByPerfil(@Query('perfil') perfil: string): Promise<UserListDTO> {
+        return await this.usersService.getUsersByPerfil(perfil);  
+    }
+
 }

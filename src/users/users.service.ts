@@ -123,4 +123,19 @@ export class UsersService {
         }
         return toUserDTO(user);
     }
+
+    async getUsersByPerfil(perfil: string): Promise<UserListDTO> {
+        const list: UserListDTO = new UserListDTO();        
+        const result: UserEntity[] = await this.usersRepository
+            .createQueryBuilder("users")
+            .where("users.perfil = :perfil", { perfil })
+            .andWhere("users.ativo = :ativo", { ativo: true })
+            .getMany();
+
+        for (let index = 0; index < result.length; index++) {
+            const element = result[index];
+            list.users.push(toUserDTO(element));
+        }
+        return toPromise(list);
+    }
 }

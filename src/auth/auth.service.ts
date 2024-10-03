@@ -75,4 +75,8 @@ export class AuthService {
         await this.usersService.updateUser(id, userDTO);
         return status;  
     }    
+
+    async getUsersByPerfil(perfil: string): Promise<UserListDTO> {
+        return await this.usersService.getUsersByPerfil(perfil);        
+    }
 }
