@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
-import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UserDTO, UserEntity } from './user';
 
 export class MaintenanceDTO {
     id: number;               
@@ -7,7 +8,7 @@ export class MaintenanceDTO {
     descricao: string;       
     tipoManutencao: string;  
     criticidade: string;     
-    tecnico: number;         
+    tecnico: UserEntity;         
     dataAbertura: Date;      
     dataFechamento: Date;    
     status: string;          
@@ -53,9 +54,6 @@ export class MaintenanceEntity {
     @Column()
     criticidade: string;
 
-    @Column()
-    tecnico: number;
-
     @Column({ type: 'date' })
     dataAbertura: Date;
 
@@ -73,6 +71,9 @@ export class MaintenanceEntity {
 
     @Column()
     modelo: string;
+
+    @ManyToOne(() => UserEntity, (user) => user.manutenções) // Define o relacionamento ManyToOne
+    tecnico: UserEntity; // Referência ao UserEntity
 
     @BeforeInsert()
     async prepareData() {

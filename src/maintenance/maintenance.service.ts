@@ -15,6 +15,7 @@ export class MaintenanceService {
     const list: MaintenanceListDTO = new MaintenanceListDTO();        
     const result: MaintenanceEntity[] = await this.maintenanceRepository
         .createQueryBuilder("maintenance")
+        .leftJoinAndSelect("maintenance.tecnico", "user")
         .getMany();
    
     result.forEach(element => {

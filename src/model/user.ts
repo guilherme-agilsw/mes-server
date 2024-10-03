@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { MaintenanceEntity } from './maintenance';
 
 
 ///// DTOs
@@ -50,12 +51,15 @@ export class UserEntity {
     
     @Column()
     password: string;
-
+    
     @Column()
     perfil: string;
 
     @Column()
     ativo: boolean;
+
+    @OneToMany(() => MaintenanceEntity, (maintenance) => maintenance.tecnico)
+    manutenções: MaintenanceEntity[];
 
     @BeforeInsert()  async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);  
