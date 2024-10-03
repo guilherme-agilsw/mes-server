@@ -44,20 +44,17 @@ export class MaintenanceService {
         return new MaintenanceDTO(savedMaintenance);
   }   
 
+  async countMaintenanceByStatus(): Promise<{ status: string; count: number }[]> {
+    const result = await this.maintenanceRepository
+        .createQueryBuilder('maintenance')
+        .select('maintenance.status AS status')
+        .addSelect('COUNT(maintenance.id) AS count')
+        .groupBy('maintenance.status')
+        .getRawMany();
 
-  findAll() {
-    return `This action returns all maintenance`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} maintenance`;
-  }
-
-  update(id: number, updateMaintenanceDto: MaintenanceDTO) {
-    return `This action updates a #${id} maintenance`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} maintenance`;
-  }
+    return result.map(row => ({
+        status: row.status,
+        count: Number(row.count), 
+    }));
+}
 }

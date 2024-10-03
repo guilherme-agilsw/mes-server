@@ -17,19 +17,9 @@ export class MaintenanceController {
     //return this.maintenanceService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.maintenanceService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMaintenanceDto: MaintenanceDTO) {
-    return this.maintenanceService.update(+id, updateMaintenanceDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.maintenanceService.remove(+id);
+  @Get('countStatus')
+  async getMaintenanceCountByStatus() {
+      return this.maintenanceService.countMaintenanceByStatus();
   }
 
 
