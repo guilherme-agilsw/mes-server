@@ -56,16 +56,5 @@ export class AuthService {
             throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
         }    
         return user;  
-    }
-
-    async updateUser(id: number, userDTO: UserDTO): Promise<UpdateStatus> {
-        let status: UpdateStatus = {
-            success: true,
-            message: 'Usuário atualizado',
-        };
-        
-        await this.usersService.updateUser(id, userDTO);
-        return status;  
-    }   
-    
+    }    
 }

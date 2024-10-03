@@ -34,10 +34,4 @@ export class AuthController {
         return req.user;
     }
 
-    
-    @Post('updateUser')
-    public async updateUser( @Body('id') id: number, @Body() user: UserDTO): Promise<UpdateStatus> {
-        return await this.authService.updateUser(id, user);
-    }
-
 }
