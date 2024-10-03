@@ -5,7 +5,7 @@ import { MaintenanceDTO, MaintenanceListDTO } from 'src/model/maintenance';
 
 @Controller('maintenance')
 export class MaintenanceController {
-  constructor(private readonly maintenanceService: MaintenanceService) {}
+  constructor(private readonly maintenanceService: MaintenanceService) { }
 
   @Post('create')
   @UseGuards(AuthGuard())
@@ -13,15 +13,21 @@ export class MaintenanceController {
     return this.maintenanceService.create(createMaintenanceDto);
   }
 
+  @Post('updateMaintenance')
+  @UseGuards(AuthGuard())
+  public async updateMaintenance(@Body('id') id: number, @Body() maintenance: MaintenanceDTO): Promise<MaintenanceDTO> {
+    return await this.maintenanceService.updateMaintenance(id, maintenance);
+  }
+
   @Get('findAll')
   @UseGuards(AuthGuard())
-  findAll() : Promise<MaintenanceListDTO> {
+  findAll(): Promise<MaintenanceListDTO> {
     return this.maintenanceService.getAllMaintenance();
   }
 
   @Get('countStatus')
   @UseGuards(AuthGuard())
   async getMaintenanceCountByStatus() {
-      return this.maintenanceService.countMaintenanceByStatus();
+    return this.maintenanceService.countMaintenanceByStatus();
   }
 }

@@ -48,7 +48,6 @@ export class UsersService {
             throw new HttpException('Usuário não localizado', HttpStatus.NOT_FOUND);
         }
 
-        user.uid = userDTO.uid;
         user.name = userDTO.name;
         user.email = userDTO.email;
         user.perfil = userDTO.perfil;
