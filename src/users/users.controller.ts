@@ -30,4 +30,8 @@ export class UsersController {
         return await this.usersService.getUsersByPerfil(perfil);  
     }
 
+    @Get('countStatus')
+    async getUserCountByStatus() {
+        return this.usersService.countUsersByStatus();
+    }
 }
