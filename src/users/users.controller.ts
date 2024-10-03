@@ -9,11 +9,13 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Get('getAllUsers')    
+    @UseGuards(AuthGuard())
     public async getAllUsersUser(): Promise<UserListDTO> {
-        return await this.usersService.getAllUsers();  
+        return await this.usersService.getAllUsers();
     }
 
-    @Get('getUser')    
+    @Get('getUser')       
+    @UseGuards(AuthGuard()) 
     public async getUser(@Query('id') id: number): Promise<UserDTO> {
         return await this.usersService.getUserById(id);
     }

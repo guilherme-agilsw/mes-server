@@ -58,14 +58,6 @@ export class AuthService {
         return user;  
     }
 
-    async getUser(id: number): Promise<UserDTO> {
-        return await this.usersService.findById(id);        
-    }
-
-    async getAllUsers(): Promise<UserListDTO> {
-        return await this.usersService.getAllUsers();        
-    }
-
     async updateUser(id: number, userDTO: UserDTO): Promise<UpdateStatus> {
         let status: UpdateStatus = {
             success: true,
@@ -74,7 +66,6 @@ export class AuthService {
         
         await this.usersService.updateUser(id, userDTO);
         return status;  
-    }    
-
+    }   
     
 }

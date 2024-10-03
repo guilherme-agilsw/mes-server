@@ -34,17 +34,7 @@ export class AuthController {
         return req.user;
     }
 
-    @Get('getUser')    
-    @UseGuards(AuthGuard())
-    public async getUser(@Body()  id: number): Promise<UserDTO> {
-        return await this.authService.getUser(id);
-    }
-
-    @Get('getAllUsers')    
-    @UseGuards(AuthGuard())
-    public async getAllUsersUser(): Promise<UserListDTO> {
-        return await this.authService.getAllUsers();
-    }
+    
     @Post('updateUser')
     public async updateUser( @Body('id') id: number, @Body() user: UserDTO): Promise<UpdateStatus> {
         return await this.authService.updateUser(id, user);
