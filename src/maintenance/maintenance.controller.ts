@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Req, UseGuards, Patch, Param, Delete } from '@nestjs/common';
 import { MaintenanceService } from './maintenance.service';
 import { MaintenanceDTO, MaintenanceListDTO } from 'src/model/maintenance';
 
@@ -6,14 +6,15 @@ import { MaintenanceDTO, MaintenanceListDTO } from 'src/model/maintenance';
 export class MaintenanceController {
   constructor(private readonly maintenanceService: MaintenanceService) {}
 
-  @Post()
-  create(@Body() createMaintenanceDto: MaintenanceDTO) {
+  @Post('create')
+  create(@Body() createMaintenanceDto: MaintenanceDTO): Promise<MaintenanceDTO> {
     return this.maintenanceService.create(createMaintenanceDto);
   }
 
-  @Get()
-  findAll() {
-    return this.maintenanceService.findAll();
+  @Get('findAll')
+  findAll() : Promise<MaintenanceListDTO> {
+    return this.maintenanceService.getAllMaintenance();
+    //return this.maintenanceService.findAll();
   }
 
   @Get(':id')
@@ -31,9 +32,5 @@ export class MaintenanceController {
     return this.maintenanceService.remove(+id);
   }
 
-  @Get('getAllMaintenance')
-  public async getAllMaintenance(): Promise<MaintenanceListDTO> {
-    return await this.maintenanceService.getAllMaintenance();
-  }
 
 }

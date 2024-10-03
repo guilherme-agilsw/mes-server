@@ -2,10 +2,22 @@ import * as bcrypt from 'bcrypt';
 import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export class MaintenanceDTO {
-    identificacao: string;
-    titulo: string;
-    dataAbertura: Date; 
-    situacao: Situacao; 
+    id: number;               
+    titulo: string;          
+    descricao: string;       
+    tipoManutencao: string;  
+    criticidade: string;     
+    tecnico: number;         
+    dataAbertura: Date;      
+    dataFechamento: Date;    
+    status: string;          
+    equipamento: string;     
+    localizacao: string;     
+    modelo: string;          
+
+    constructor(partial: Partial<MaintenanceDTO>) {
+        Object.assign(this, partial);
+    }
 }
 
 export class MaintenanceListDTO {
@@ -27,22 +39,40 @@ export enum Situacao {
 export class MaintenanceEntity {
 
     @PrimaryGeneratedColumn()
-    public id: number; // Chave primária gerada automaticamente
-
-    @Column()
-    identificacao: string;
+    public id: number; 
 
     @Column()
     titulo: string; 
 
+    @Column()
+    descricao: string; 
+
+    @Column()
+    tipoManutencao: string;
+
+    @Column()
+    criticidade: string;
+
+    @Column()
+    tecnico: number;
+
     @Column({ type: 'date' })
     dataAbertura: Date;
 
-    @Column({
-        type: 'enum',
-        enum: Situacao,
-    })
-    situacao: Situacao; // Usando o enum Situacao para o campo 'situacao'
+    @Column({ type: 'date' })
+    dataFechamento: Date;
+
+    @Column()
+    status: string;
+
+    @Column()
+    equipamento: string;
+
+    @Column()
+    localizacao: string;
+
+    @Column()
+    modelo: string;
 
     @BeforeInsert()
     async prepareData() {
